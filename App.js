@@ -1,12 +1,9 @@
+import MainStack from '@navigation/MainStack';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const App = () => {
-  return (
-    <View>
-      <Text>App</Text>
-    </View>
-  );
+  return <MainStack />;
 };
 
 export default App;
