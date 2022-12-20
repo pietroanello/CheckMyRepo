@@ -2,7 +2,7 @@ import {GlobalContext} from '@context/GlobalContext';
 import Text_ from '@HOC/Text_';
 import NetInfo from '@react-native-community/netinfo';
 import axios from 'axios';
-import {PUSH_TOKEN} from 'dotenv';
+import {PUSH_TOKEN, YOUR_NAME} from 'dotenv';
 import {useContext} from 'react';
 
 const ERROR_COMPONENTS = {
@@ -44,7 +44,7 @@ const useFunctions = () => {
     try {
       const res = await axios.post(
         `https://pushmore.io/webhook/${PUSH_TOKEN}`,
-        {repoUrl: `https://github.com/${user}/${repo}`, sender: user},
+        {repoUrl: `https://github.com/${user}/${repo}`, sender: YOUR_NAME},
       );
 
       if (res?.data !== 'OK')
