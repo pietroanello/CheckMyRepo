@@ -1,13 +1,27 @@
 import {GlobalContext} from '@context/GlobalContext';
+import Text_ from '@HOC/Text_';
 import NetInfo from '@react-native-community/netinfo';
 import axios from 'axios';
 import {PUSH_TOKEN} from 'dotenv';
 import {useContext} from 'react';
 
-const ERROR_TYPES = {
-  internet: 'Check your internet connection',
-  badRepo: 'Check your username or your repository name',
-  somethingWrong: 'Ops! Something went wrong. Retry...',
+const ERROR_COMPONENTS = {
+  internet: () => (
+    <Text_ style={{marginTop: 20}}>
+      Check your <Text_ weight="bold">internet connection</Text_>
+    </Text_>
+  ),
+  badRepo: () => (
+    <Text_ style={{marginTop: 20}}>
+      Check your <Text_ weight="bold">username</Text_> or your{' '}
+      <Text_ weight="bold">repository</Text_> name
+    </Text_>
+  ),
+  somethingWrong: () => (
+    <Text_ weight="bold" style={{marginTop: 20}}>
+      Ops! Something went wrong. Retry...
+    </Text_>
+  ),
 };
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -34,24 +48,25 @@ const useFunctions = () => {
       );
 
       if (res?.data !== 'OK')
-        return {success: false, type: ERROR_TYPES.somethingWrong};
+        return {success: false, component: ERROR_COMPONENTS.somethingWrong};
       return {success: true};
     } catch (error) {
-      console.log(error);
-      return {success: false, type: ERROR_TYPES.somethingWrong};
+      return {success: false, component: ERROR_COMPONENTS.somethingWrong};
     }
   };
 
   const checkRepo = async () => {
     try {
       const hasInternet = await checkInternet();
-      if (!hasInternet) return {success: false, type: ERROR_TYPES.internet};
-      if (!user || !repo) return {success: false, type: ERROR_TYPES.badRepo};
+      if (!hasInternet)
+        return {success: false, component: ERROR_COMPONENTS.internet};
+      if (!user || !repo)
+        return {success: false, component: ERROR_COMPONENTS.badRepo};
 
       const res = await axios.get(`https://github.com/${user}/${repo}`);
       if (res) return {success: true};
     } catch (error) {
-      return {success: false, type: ERROR_TYPES.badRepo};
+      return {success: false, component: ERROR_COMPONENTS.badRepo};
     }
   };
 
