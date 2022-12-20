@@ -34,7 +34,7 @@ const Home = ({navigation}) => {
         setType('sending');
         res = await sendRepo();
         setStatus(res?.success ? null : res);
-        setType(res?.success ? 'cool' : 'check');
+        setType(res?.success ? 'cool' : 'send');
         break;
       case 'cool':
         resetData();
@@ -69,11 +69,7 @@ const Home = ({navigation}) => {
             onPress={() => pressTouch('repo')}
             value={data.repo || 'repo'}
           />
-          {status && !status.success && (
-            <Text_ weight="bold" style={styles.error}>
-              {status.type}
-            </Text_>
-          )}
+          {status && !status.success && status.component()}
         </>
       ) : (
         <Text_ size="display1" weight="bold" style={styles.done}>
