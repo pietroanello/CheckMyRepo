@@ -10,30 +10,27 @@ const ERROR_TYPES = {
   somethingWrong: 'Ops! Something went wrong. Retry...',
 };
 
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+const checkInternet = async () => {
+  try {
+    const state = await NetInfo.fetch();
+    return state?.isConnected;
+  } catch (error) {
+    return false;
+  }
+};
+
 const useFunctions = () => {
   const {
     data: {user, repo},
   } = useContext(GlobalContext);
-
-  const checkInternet = async () => {
-    try {
-      const state = await NetInfo.fetch();
-      return state?.isConnected;
-    } catch (error) {
-      return false;
-    }
-  };
 
   const sendRepo = async () => {
     try {
       const res = await axios.post(
         `https://pushmore.io/webhook/${PUSH_TOKEN}`,
         {repoUrl: `https://github.com/${user}/${repo}`, sender: user},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       );
 
       if (res?.data !== 'OK')
@@ -58,7 +55,7 @@ const useFunctions = () => {
     }
   };
 
-  return {sendRepo, checkRepo, checkInternet};
+  return {sendRepo, checkRepo};
 };
 
 export default useFunctions;

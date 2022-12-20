@@ -21,7 +21,7 @@ module.exports = function (api) {
             '@hooks': './src/hooks',
             '@navigation': './src/navigation',
             '@screens': './src/screens',
-            '@svgs': './src/svgs',
+            '@img': './src/img',
             '@utils': './src/utils',
           },
         },

@@ -1,4 +1,5 @@
 import BottomButton from '@components/BottomButton';
+import TouchComponent from '@components/TouchComponent';
 import {GlobalContext} from '@context/GlobalContext';
 import SafeAreaView_ from '@HOC/SafeAreaView_';
 import Text_ from '@HOC/Text_';
@@ -6,7 +7,7 @@ import useFunctions from '@hooks/useFunctions';
 import COLORS from '@utils/colors';
 import ROUTES from '@utils/routes';
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const Home = ({navigation}) => {
   const {data, resetData} = useContext(GlobalContext);
@@ -19,35 +20,21 @@ const Home = ({navigation}) => {
     setType('check');
   }, [data]);
 
-  const renderTouchComponent = type => {
-    return (
-      <View style={{flexDirection: 'row'}}>
-        <Text_ size="display1">/</Text_>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(ROUTES.Edit, {type})}>
-          <Text_ size="display1" style={styles.pressable}>
-            {data[type] || type}
-          </Text_>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const pressTouch = type => navigation.navigate(ROUTES.Edit, {type});
 
   const handlePress = async () => {
     switch (type) {
       case 'check':
+        setType('checking');
         let res = await checkRepo();
         setStatus(res);
-        res.success && setType('send');
+        setType(res.success ? 'send' : 'check');
         break;
       case 'send':
+        setType('sending');
         res = await sendRepo();
-        if (res.success) {
-          setStatus();
-          setType('cool');
-        } else {
-          setStatus(res);
-        }
+        setStatus(res?.success ? null : res);
+        setType(res?.success ? 'cool' : 'check');
         break;
       case 'cool':
         resetData();
@@ -74,8 +61,14 @@ const Home = ({navigation}) => {
             Set the repository address
           </Text_>
           <Text_ size="display1">github.com</Text_>
-          {renderTouchComponent('user')}
-          {renderTouchComponent('repo')}
+          <TouchComponent
+            onPress={() => pressTouch('user')}
+            value={data.user || 'user'}
+          />
+          <TouchComponent
+            onPress={() => pressTouch('repo')}
+            value={data.repo || 'repo'}
+          />
           {status && !status.success && (
             <Text_ weight="bold" style={styles.error}>
               {status.type}
@@ -87,7 +80,7 @@ const Home = ({navigation}) => {
           All done! Repository sent.
         </Text_>
       )}
-      <BottomButton onPress={handlePress} type={type} />
+      <BottomButton onPress={handlePress} value={type} />
     </SafeAreaView_>
   );
 };
@@ -100,9 +93,6 @@ const styles = StyleSheet.create({
   },
   error: {
     marginTop: 20,
-  },
-  pressable: {
-    opacity: 0.5,
   },
   done: {
     marginTop: 40,

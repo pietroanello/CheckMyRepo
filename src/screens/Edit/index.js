@@ -3,9 +3,9 @@ import {GlobalContext} from '@context/GlobalContext';
 import SafeAreaView_ from '@HOC/SafeAreaView_';
 import TextInput_ from '@HOC/TextInput_';
 import Text_ from '@HOC/Text_';
-import SvgArrowBack from '@svgs/SvgArrowBack';
 import React, {useContext, useState} from 'react';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -40,7 +40,7 @@ const Edit = ({route, navigation}) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{marginRight: 25}}>
-            <SvgArrowBack />
+            <Image source={require('@img/back.png')} />
           </TouchableOpacity>
           <Text_ weight="bold">{TITLES[type]}</Text_>
         </View>
@@ -54,7 +54,7 @@ const Edit = ({route, navigation}) => {
           style={styles.textInput}
           autoFocus={true}
         />
-        <BottomButton type="done" onPress={handlePress} />
+        <BottomButton value="done" onPress={handlePress} />
       </SafeAreaView_>
     </KeyboardAvoidingView>
   );
