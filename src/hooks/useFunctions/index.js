@@ -44,7 +44,7 @@ const useFunctions = () => {
   const sendRepo = async () => {
     try {
       const res = await axios.post(
-        `https://pushmore.io/webhook/${PUSH_TOKEN}00`,
+        `https://pushmore.io/webhook/${PUSH_TOKEN}`,
         {repoUrl: `https://github.com/${user}/${repo}`, sender: YOUR_NAME},
       );
 
