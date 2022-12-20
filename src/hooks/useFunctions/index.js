@@ -18,8 +18,9 @@ const ERROR_COMPONENTS = {
     </Text_>
   ),
   somethingWrong: () => (
-    <Text_ weight="bold" style={{marginTop: 20}}>
-      Ops! Something went wrong. Retry...
+    <Text_ style={{marginTop: 20}}>
+      Ops! Something went wrong. Check your{' '}
+      <Text_ weight="bold">PushMore token</Text_> or retry
     </Text_>
   ),
 };
@@ -43,7 +44,7 @@ const useFunctions = () => {
   const sendRepo = async () => {
     try {
       const res = await axios.post(
-        `https://pushmore.io/webhook/${PUSH_TOKEN}`,
+        `https://pushmore.io/webhook/${PUSH_TOKEN}00`,
         {repoUrl: `https://github.com/${user}/${repo}`, sender: YOUR_NAME},
       );
 
