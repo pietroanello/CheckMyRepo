@@ -4,6 +4,12 @@ module.exports = function (api) {
     presets: ['module:metro-react-native-babel-preset'],
     plugins: [
       [
+        'module:react-native-dotenv',
+        {
+          moduleName: 'dotenv',
+        },
+      ],
+      [
         'module-resolver',
         {
           root: ['./src'],

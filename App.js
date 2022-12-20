@@ -1,9 +1,14 @@
+import GlobalContextProvider from '@context/GlobalContext';
 import MainStack from '@navigation/MainStack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
 const App = () => {
-  return <MainStack />;
+  return (
+    <GlobalContextProvider>
+      <MainStack />
+    </GlobalContextProvider>
+  );
 };
 
 export default App;

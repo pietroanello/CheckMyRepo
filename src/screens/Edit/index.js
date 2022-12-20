@@ -1,14 +1,72 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import BottomButton from '@components/BottomButton';
+import {GlobalContext} from '@context/GlobalContext';
+import SafeAreaView_ from '@HOC/SafeAreaView_';
+import TextInput_ from '@HOC/TextInput_';
+import Text_ from '@HOC/Text_';
+import SvgArrowBack from '@svgs/SvgArrowBack';
+import React, {useContext, useState} from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-const Edit = () => {
+const TITLES = {
+  user: 'USER',
+  repo: 'REPOSITORY',
+};
+
+const Edit = ({route, navigation}) => {
+  const {type} = route.params;
+  const {data, changeData} = useContext(GlobalContext);
+  const [value, setValue] = useState(data[type]);
+
+  const handlePress = () => {
+    changeData(type, value);
+    navigation.goBack();
+  };
+
   return (
-    <View>
-      <Text>Edit</Text>
-    </View>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      enabled={Platform.OS === 'android' ? false : true}
+      behavior={'padding'}
+      keyboardVerticalOffset={-35}>
+      <SafeAreaView_>
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{marginRight: 25}}>
+            <SvgArrowBack />
+          </TouchableOpacity>
+          <Text_ weight="bold">{TITLES[type]}</Text_>
+        </View>
+        <TextInput_
+          placeholder={`Type your ${
+            type === 'user' ? 'github username' : 'repository name'
+          }`}
+          value={value}
+          onChangeText={setValue}
+          onEndEditing={handlePress}
+          style={styles.textInput}
+          autoFocus={true}
+        />
+        <BottomButton type="done" onPress={handlePress} />
+      </SafeAreaView_>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Edit;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textInput: {
+    borderBottomWidth: 3,
+    paddingBottom: 3,
+    marginTop: 40,
+    marginHorizontal: '4%',
+  },
+});

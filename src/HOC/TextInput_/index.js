@@ -1,10 +1,12 @@
 import {getFontSize, getFontWeight} from '@utils/dimensions';
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 
-const Text_ = props => {
+const TextInput_ = props => {
   return (
-    <Text
+    <TextInput
+      autoCapitalize="none"
+      placeholderTextColor="gray"
       {...props}
       style={[
         styles.text,
@@ -13,16 +15,16 @@ const Text_ = props => {
           fontSize: getFontSize(props.size),
           fontFamily: getFontWeight(props.weight),
         },
-      ]}>
-      {props.children}
-    </Text>
+      ]}
+    />
   );
 };
 
-export default Text_;
+export default TextInput_;
 
 const styles = StyleSheet.create({
   text: {
     color: 'black',
+    textTransform: 'lowercase',
   },
 });
